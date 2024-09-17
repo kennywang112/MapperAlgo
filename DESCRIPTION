@@ -1,0 +1,27 @@
+Package: MapperAlgo
+Title: Topological Data Analysis: Mapper Algorithm
+Version: 1.0
+Date: 2024-09-17
+Authors@R: c(person("Chi-Chien", "Wang", email = "kennywang2003@gmail.com", role = c("aut", "cre", "trl")))
+Author: Chi-Chien Wang 
+Maintainer: Chi-Chien Wang <kennywang2003@gmail.com>
+Description: The Mapper algorithm from Topological Data Analysis (TDA). 
+    1. Define a filter function (lens) on the data. 
+    2. Perform clustering within each level set and generate 
+    one node (vertex) for each cluster.  
+    3. For each pair of clusters in adjacent level sets with a nonempty intersection, generate one edge 
+    between vertices. The function mapper1D uses a filter function with
+    codomain R, while the function mapper2D uses a filter function with
+    codomain R^2.
+Depends: R (>= 3.1.2)
+Suggests: 
+    fastcluster,
+    igraph,
+    testthat (>= 3.0.0)
+License: MIT + file LICENSE
+URL: https://github.com/kennywang112/MapperAlgo/
+BugReports: https://github.com/kennywang112/MapperAlgo/issues
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Config/testthat/edition: 3
+RoxygenNote: 7.3.2
