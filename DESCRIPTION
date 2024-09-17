@@ -1,18 +1,13 @@
 Package: MapperAlgo
 Title: Topological Data Analysis: Mapper Algorithm
-Version: 1.0
+Version: 1.0.1
 Date: 2024-09-17
-Authors@R: c(person("Chi-Chien", "Wang", email = "kennywang2003@gmail.com", role = c("aut", "cre", "trl")))
-Author: Chi-Chien Wang 
+Authors@R: person("Chi-Chien", "Wang", email = "kennywang2003@gmail.com", role = c("aut", "cre", "trl"))
 Maintainer: Chi-Chien Wang <kennywang2003@gmail.com>
-Description: The Mapper algorithm from Topological Data Analysis (TDA). 
-    1. Define a filter function (lens) on the data. 
-    2. Perform clustering within each level set and generate 
-    one node (vertex) for each cluster.  
-    3. For each pair of clusters in adjacent level sets with a nonempty intersection, generate one edge 
-    between vertices. The function mapper1D uses a filter function with
-    codomain R, while the function mapper2D uses a filter function with
-    codomain R^2.
+Description: The Mapper algorithm from Topological Data Analysis (TDA), based on Nerve Theorem and Simplicial complex, the steps are as follows
+    1. Define a filter (lens) function on the data. 
+    2. Perform clustering within each level set. 
+    3. Generate a simplicial complex from the clustering results.
 Depends: R (>= 3.1.2)
 Suggests: 
     fastcluster,
