@@ -1,13 +1,13 @@
 Package: MapperAlgo
 Title: Topological Data Analysis: Mapper Algorithm
-Version: 1.0.1
+Version: 1.0
 Date: 2024-09-17
-Authors@R: person("Chi-Chien", "Wang", email = "kennywang2003@gmail.com", role = c("aut", "cre", "trl"))
-Maintainer: Chi-Chien Wang <kennywang2003@gmail.com>
-Description: The Mapper algorithm from Topological Data Analysis (TDA), based on Nerve Theorem and Simplicial complex, the steps are as follows
+Authors@R: person("ChiChien", "Wang", email = "kennywang2003@gmail.com", role = c("aut", "cre", "trl"))
+Maintainer: ChiChien Wang <kennywang2003@gmail.com>
+Description: The Mapper algorithm from Topological Data Analysis, the steps are as follows
     1. Define a filter (lens) function on the data. 
     2. Perform clustering within each level set. 
-    3. Generate a simplicial complex from the clustering results.
+    3. Generate a complex from the clustering results.
 Depends: R (>= 3.1.2)
 Suggests: 
     fastcluster,

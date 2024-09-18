@@ -4,7 +4,7 @@
 Topological data analysis: Mapper algorithm
 }
 \description{
-The Mapper algorithm is a method for topological data analysis (TDA) that provides a way to visualize the structure of high-dimensional data. The Mapper algorithm is a generalization of the Reeb graph construction, which is a method for visualizing the topology of scalar fields.
+The Mapper algorithm is a method for topological data analysis that provides a way to visualize the structure of high-dimensional data. The Mapper algorithm is a generalization of the Reeb graph construction, which is a method for visualizing the topology of scalar fields.
 }
 \usage{
 MapperAlgo(filter_values, intervals, percent_overlap, num_bins_when_clustering)
@@ -30,7 +30,7 @@ G. Singh, F. Memoli, G. Carlsson (2007). Topological Methods for the Analysis of
 This code is based on Paul Pearson's implementation of the Mapper algorithm in R, optimized for speed and memory usage. You can install using the following command: devtools::install_github("paultpearson/TDAmapper")
 }
 \author{
-Chi-Chien Wang
+ChiChien Wang
 }
 \examples{
 library(igraph)
