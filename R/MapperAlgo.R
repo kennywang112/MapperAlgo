@@ -45,8 +45,9 @@ MapperAlgo <- function(
 
   # begin loop through all level sets
   for (lsfi in 1:num_levelsets) {
-    print(paste(lsfi, "/", num_levelsets))
-    
+    if (lsfi %% 10 == 0) {  # 每 10 次迴圈回傳一次訊息
+      message(paste(lsfi, "/", num_levelsets, " processed"))
+    }
     # Cover step
     points_in_level_set[[lsfi]] <- cover_points(
       lsfi, filter_min, interval_width, percent_overlap, filter_values, num_intervals
@@ -72,7 +73,8 @@ MapperAlgo <- function(
         points_in_vertex[[vertex_index]] <- level_external_indices[level_internal_indices == j]
       }
     }
-    # note : 計算單個interval內的cluster各個點的數量，然後用迴圈包interval的數量
+    # note : compute the number of points in each cluster of a single interval, 
+    # and then loop over the number of intervals
   } # end vertex construction
   
   # Begin simplicial complex
