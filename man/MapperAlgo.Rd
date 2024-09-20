@@ -34,6 +34,7 @@ ChiChien Wang
 }
 \examples{
 library(igraph)
+library(networkD3)
 
 data("iris")
 
@@ -70,5 +71,9 @@ MapperNodes <- mapperVertices(mapper, 1:nrow(iris))
 MapperNodes$var.maj.vertex <- as.factor(var.maj.vertex)
 MapperNodes$Nodesize <- vertex.size
 MapperLinks <- mapperEdges(mapper)
+forceNetwork(Nodes = MapperNodes, Links = MapperLinks, Target = "Linktarget",
+             Value = "Linkvalue", NodeID = "Nodename", Nodesize = "Nodesize",
+             Group = "var.maj.vertex", opacity = 1, zoom = TRUE,
+             linkDistance = 10, charge = -10, legend = TRUE)
 }
 \keyword{mapper}
