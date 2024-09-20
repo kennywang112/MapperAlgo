@@ -1,10 +1,10 @@
-# Topological Data Analysis: Mapper Algorithm
+# sTopological Data Analysis: Mapper Algorithm
 
 This package is based on the `TDAmapper` package by Paul Pearson. You can view the original package [here](https://github.com/paultpearson/TDAmapper). Since the original package hasn't been updated in over seven years, this version is focused on optimization. By incorporating vector computation into the Mapper algorithm, this package aims to significantly improve its performance.
 
 ## Get started quickly
 
-![Step visualize from [Skaf et al.](https://www.sciencedirect.com/science/article/pii/S1532046422000983)](man/figures/mapper.png){width="481"}
+![Mapper](man/figures/mapper.png) Step visualize from [Skaf et al.](https://www.sciencedirect.com/science/article/pii/S1532046422000983)
 
 **Mapper is basically a tree-step process:**
 
