@@ -4,7 +4,7 @@ This package is based on the `TDAmapper` package by Paul Pearson. You can view t
 
 ## Get started quickly
 
-![Mapper](man/figures/mapper.png) Step visualize from [Skaf et al.](https://www.sciencedirect.com/science/article/pii/S1532046422000983)
+![Mapper](man/figures/mapper.png) Step visualize from [Skaf et al.](https://doi.org/10.1016/j.jbi.2022.104082)
 
 **Mapper is basically a tree-step process:**
 
