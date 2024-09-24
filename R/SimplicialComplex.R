@@ -12,10 +12,10 @@ simplcial_complex <- function(
     filter_values, vertex_index, num_levelsets, num_intervals, vertices_in_level_set, points_in_vertex
 ) {
   filter_output_dim <- dim(filter_values)[2] # columns
-  adja <- mat.or.vec(vertex_index, vertex_index) # create empty adjacency matrix
+  # create empty adjacency matrix to store the connections between vertices
+  adja <- mat.or.vec(vertex_index, vertex_index)
   for (lsfi in 1:num_levelsets) {
-    
-    # get the level set multi-index from the level set flat index
+
     lsmi <- to_lsmi(lsfi, num_intervals)
     # Find adjacent level sets +1 of each entry in lsmi (within bounds of num_intervals)
     # Need to_lsfi to do this easily.

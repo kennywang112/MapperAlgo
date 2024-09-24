@@ -8,7 +8,9 @@
 #' @param num_intervals Number of intervals.
 #' @return Indices of points in the range.
 #' @export
-cover_points <- function(lsfi, filter_min, interval_width, percent_overlap, filter_values, num_intervals) {
+cover_points <- function(
+    lsfi, filter_min, interval_width, percent_overlap, filter_values, num_intervals
+    ) {
   # level set flat index (lsfi), which is a number, has a corresponding
   # level set multi index (lsmi), which is a vector
   lsmi <- to_lsmi(lsfi, num_intervals)

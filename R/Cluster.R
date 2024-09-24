@@ -3,10 +3,14 @@
 #' @param points_in_this_level Points in the current level set.
 #' @param filter_values The filter values.
 #' @param num_bins_when_clustering Number of bins when clustering.
+#' @param methods Specify the clustering method to be used, e.g., "hclust" or "kmeans".
+#' @param max_kmeans_clusters Maximum number of clusters when using k-means clustering.
 #' @return A list containing the number of vertices, external indices, and internal indices.
-#' @importFrom stats as.dist hclust cutree dist
+#' @importFrom stats as.dist hclust cutree dist kmeans
 #' @export
-perform_clustering <- function(points_in_this_level, filter_values, num_bins_when_clustering) {
+perform_clustering <- function(
+    points_in_this_level, filter_values, num_bins_when_clustering, methods, max_kmeans_clusters = 10
+    ) {
   num_points_in_this_level <- length(points_in_this_level)
   
   if (num_points_in_this_level == 0) {
@@ -18,16 +22,37 @@ perform_clustering <- function(points_in_this_level, filter_values, num_bins_whe
   }
   
   level_dist_object <- as.dist(as.matrix(dist(filter_values))[points_in_this_level, points_in_this_level])
-  level_max_dist <- max(level_dist_object)
-  level_hclust <- hclust(level_dist_object, method = "single")
-  level_heights <- level_hclust$height
-  level_cutoff <- cluster_cutoff_at_first_empty_bin(level_heights, level_max_dist, num_bins_when_clustering)
-  level_external_indices <- points_in_this_level[level_hclust$order]
-  level_internal_indices <- as.vector(cutree(list(
-    merge = level_hclust$merge,
-    height = level_hclust$height,
-    labels = level_external_indices), h = level_cutoff))
-  num_vertices_in_this_level <- max(level_internal_indices)
+  
+  if (methods == "hierarchical"){
+    level_max_dist <- max(level_dist_object)
+    level_hclust <- hclust(level_dist_object, method = "single")
+    level_heights <- level_hclust$height
+    
+    level_cutoff <- cluster_cutoff_at_first_empty_bin(level_heights, level_max_dist, num_bins_when_clustering)
+    level_external_indices <- points_in_this_level[level_hclust$order]
+    level_internal_indices <- as.vector(cutree(list(
+      merge = level_hclust$merge,
+      height = level_hclust$height,
+      labels = level_external_indices), h = level_cutoff))
+    num_vertices_in_this_level <- max(level_internal_indices)
+  } else if (methods == "kmeans") {
+    max_clusters_for_this_level <- min(max_kmeans_clusters, num_points_in_this_level)
+    
+    level_filter_values <- filter_values[points_in_this_level, , drop = FALSE]
+  
+    # If there are more than one point in the level, perform k-means clustering
+    if (max_clusters_for_this_level < nrow(level_filter_values)) {
+      level_kmean <- kmeans(level_filter_values, centers = max_clusters_for_this_level)
+      
+      level_external_indices <- points_in_this_level[order(level_kmean$cluster)]
+      level_internal_indices <- as.vector(level_kmean$cluster)
+      num_vertices_in_this_level <- max(level_internal_indices)
+    } else {
+      level_external_indices <- points_in_this_level
+      level_internal_indices <- rep(1, num_points_in_this_level)
+      num_vertices_in_this_level <- 1
+    }
+  }
   
   return(list(
     num_vertices = num_vertices_in_this_level,
@@ -62,4 +87,31 @@ cluster_cutoff_at_first_empty_bin <- function(heights, diam, num_bins_when_clust
     cutoff <- myhist$mids[ min(which(z == TRUE)) ]
   }
   return(cutoff)
+}
+
+#' Find the optimal number of clusters for k-means
+#'
+#' This function calculates the total within-cluster sum of squares (WSS) for a range
+#' of cluster numbers and identifies the best number of clusters (k) based on the 
+#' elbow method.
+#'
+#' @param dist_object A distance matrix or data frame containing the data to be clustered.
+#' @param max_clusters The maximum number of clusters to test for k-means. Default is 10.
+#' @return The optimal number of clusters (k) based on the elbow method.
+#' @importFrom stats kmeans
+#' @export
+find_best_k_for_kmeans <- function(dist_object, max_clusters = 10) {
+  wss_values <- numeric(max_clusters)
+  
+  for (k in 1:max_clusters) {
+    kmean_result <- kmeans(dist_object, centers = k, nstart = 25)  # nstart for more stable results
+    wss_values[k] <- kmean_result$tot.withinss  # Total within-cluster sum of squares
+  }
+  
+  differences <- diff(wss_values)
+  second_differences <- diff(differences)
+  
+  best_k <- which(second_differences == min(second_differences)) + 1
+  
+  return(best_k)
 }

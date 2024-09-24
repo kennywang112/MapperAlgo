@@ -7,13 +7,14 @@ Topological data analysis: Mapper algorithm
 The Mapper algorithm is a method for topological data analysis that provides a way to visualize the structure of high-dimensional data. The Mapper algorithm is a generalization of the Reeb graph construction, which is a method for visualizing the topology of scalar fields.
 }
 \usage{
-MapperAlgo(filter_values, intervals, percent_overlap, num_bins_when_clustering)
+MapperAlgo(filter_values, intervals, percent_overlap, num_bins_when_clustering, methods)
 }
 \arguments{
   \item{filter_values}{A data frame or matrix of the data to be analyzed.}
   \item{intervals}{An integer specifying the number of intervals to divide the filter values into.}
   \item{percent_overlap}{An integer specifying the percentage of overlap between consecutive intervals.}
   \item{num_bins_when_clustering}{An integer specifying the number of bins to use when clustering the data.}
+  \item{methods}{A character string specifying the clustering method to use. The default is "hierarchical".}
 }
 \value{
   An adjacency matrix and other components of the Mapper graph, including:
@@ -42,7 +43,8 @@ mapper <- MapperAlgo(
   filter_values = iris[,1:4],
   intervals = 4,
   percent_overlap = 50,
-  num_bins_when_clustering = 30)
+  num_bins_when_clustering = 30,
+  methods = "hierarchical")
     
 graph <- graph.adjacency(mapper$adjacency, mode="undirected")
 l = length(V(graph))

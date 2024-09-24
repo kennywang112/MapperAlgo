@@ -45,6 +45,7 @@ I've written some articles on Medium, which you can find [here](https://medium.c
 This is for the author to submit the package to CRAN.
 
 ``` r
+devtools::document()
 devtools::build()
 devtools::submit_cran()
 ```

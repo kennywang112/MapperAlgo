@@ -7,7 +7,9 @@
 perform_clustering(
   points_in_this_level,
   filter_values,
-  num_bins_when_clustering
+  num_bins_when_clustering,
+  methods,
+  max_kmeans_clusters = 10
 )
 }
 \arguments{
@@ -16,6 +18,10 @@ perform_clustering(
 \item{filter_values}{The filter values.}
 
 \item{num_bins_when_clustering}{Number of bins when clustering.}
+
+\item{methods}{Specify the clustering method to be used, e.g., "hclust" or "kmeans".}
+
+\item{max_kmeans_clusters}{Maximum number of clusters when using k-means clustering.}
 }
 \value{
 A list containing the number of vertices, external indices, and internal indices.

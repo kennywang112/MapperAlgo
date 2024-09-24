@@ -8,6 +8,7 @@
 #' @param intervals An integer specifying the number of intervals.
 #' @param percent_overlap Percentage of overlap between consecutive intervals.
 #' @param num_bins_when_clustering Number of bins to use when clustering.
+#' @param methods Specify the clustering method to be used, e.g., "hclust" or "kmeans".
 #' @return A list containing the Mapper graph components:
 #' \item{adjacency}{The adjacency matrix of the Mapper graph.}
 #' \item{num_vertices}{The number of vertices in the Mapper graph.}
@@ -15,12 +16,14 @@
 #' \item{points_in_vertex}{A list of the indices of the points in each vertex.}
 #' \item{points_in_level_set}{A list of the indices of the points in each level set.}
 #' \item{vertices_in_level_set}{A list of the indices of the vertices in each level set.}
+#' \item{methods}{Specify the clustering method to be used, e.g., "hclust" or "kmeans".}
 #' @export
 MapperAlgo <- function(
     filter_values, # dist_df[,1:col]
     intervals, # rep(2, col)
     percent_overlap, # 50
-    num_bins_when_clustering # 10
+    num_bins_when_clustering, # 10
+    methods
 ) {
 
   filter_values <- data.frame(filter_values)
@@ -53,7 +56,7 @@ MapperAlgo <- function(
       )
     # Clustering step
     clustering_result <- perform_clustering(
-      points_in_level_set[[lsfi]], filter_values, num_bins_when_clustering
+      points_in_level_set[[lsfi]], filter_values, num_bins_when_clustering, methods
       )
     
     num_vertices_in_this_level <- clustering_result$num_vertices
@@ -77,8 +80,8 @@ MapperAlgo <- function(
   }
   
   # Begin simplicial complex
-  adja <- simplcial_complex(filter_values, vertex_index, num_levelsets, 
-                    num_intervals, vertices_in_level_set, points_in_vertex)
+  adja <- simplcial_complex(filter_values, vertex_index, num_levelsets, num_intervals,
+                            vertices_in_level_set, points_in_vertex)
   
   mapperoutput <- list(adjacency = adja,
                        num_vertices = vertex_index,

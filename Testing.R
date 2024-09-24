@@ -15,7 +15,8 @@ time_taken <- system.time({
     filter_values = iris[,1:4],
     intervals = 4,
     percent_overlap = 50,
-    num_bins_when_clustering = 30)
+    num_bins_when_clustering = 30,
+    methods ="kmeans")
 })
 time_taken
 
@@ -50,3 +51,4 @@ forceNetwork(Nodes = MapperNodes, Links = MapperLinks, Target = "Linktarget",
              Value = "Linkvalue", NodeID = "Nodename", Nodesize = "Nodesize",
              Group = "var.maj.vertex", opacity = 1, zoom = TRUE,
              linkDistance = 10, charge = -10, legend = TRUE)
+
