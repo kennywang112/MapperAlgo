@@ -5,11 +5,14 @@
 #' @param num_bins_when_clustering Number of bins when clustering.
 #' @param methods Specify the clustering method to be used, e.g., "hclust" or "kmeans".
 #' @param max_kmeans_clusters Maximum number of clusters when using k-means clustering.
+#' @param eps The maximum distance between two samples for one to be considered as in the neighborhood of the other.
+#' @param minPts The number of samples in a neighborhood for a point to be considered as a core point.
 #' @return A list containing the number of vertices, external indices, and internal indices.
 #' @importFrom stats as.dist hclust cutree dist kmeans
 #' @export
 perform_clustering <- function(
-    points_in_this_level, filter_values, num_bins_when_clustering, methods, max_kmeans_clusters = 10
+    points_in_this_level, filter_values, num_bins_when_clustering, methods, 
+    max_kmeans_clusters = 10, eps = 0.5, minPts = 5
     ) {
   num_points_in_this_level <- length(points_in_this_level)
   
@@ -52,8 +55,23 @@ perform_clustering <- function(
       level_internal_indices <- rep(1, num_points_in_this_level)
       num_vertices_in_this_level <- 1
     }
+  } else if (methods == "dbscan") {
+    level_filter_values <- filter_values[points_in_this_level, , drop = FALSE]
+
+    dbscan_result <- dbscan::dbscan(level_filter_values, eps = eps, minPts = minPts)
+
+    # If DBSCAN finds clusters
+    if (max(dbscan_result$cluster) > 0) {
+      level_external_indices <- points_in_this_level[order(dbscan_result$cluster)]
+      level_internal_indices <- as.vector(dbscan_result$cluster)
+      num_vertices_in_this_level <- max(level_internal_indices)
+    } else {
+      level_external_indices <- points_in_this_level
+      level_internal_indices <- rep(1, num_points_in_this_level)
+      num_vertices_in_this_level <- 1
+    }
   }
-  
+
   return(list(
     num_vertices = num_vertices_in_this_level,
     external_indices = level_external_indices,
@@ -101,6 +119,7 @@ cluster_cutoff_at_first_empty_bin <- function(heights, diam, num_bins_when_clust
 #' @importFrom stats kmeans
 #' @export
 find_best_k_for_kmeans <- function(dist_object, max_clusters = 10) {
+  # elbow method
   wss_values <- numeric(max_clusters)
   
   for (k in 1:max_clusters) {
