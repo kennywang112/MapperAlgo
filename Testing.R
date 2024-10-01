@@ -16,7 +16,7 @@ time_taken <- system.time({
     intervals = 4,
     percent_overlap = 50,
     num_bins_when_clustering = 30,
-    methods ="dbscan")
+    methods ="pam")
 })
 time_taken
 
