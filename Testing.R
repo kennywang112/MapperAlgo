@@ -1,6 +1,5 @@
 library(networkD3)
 library(igraph)
-
 source('R/EdgeVertices.R')
 source('R/ConvertLevelsets.R')
 source('R/Cover.R')

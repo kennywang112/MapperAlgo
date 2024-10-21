@@ -6,7 +6,7 @@ This package is based on the `TDAmapper` package by Paul Pearson. You can view t
 
 ![Mapper](man/figures/mapper.png) Step visualize from [Skaf et al.](https://doi.org/10.1016/j.jbi.2022.104082)
 
-**Mapper is basically a tree-step process:**
+**Mapper is basically a three-step process:**
 
 1\. **Cover**: This step splits the data into overlapping intervals and creates a cover for the data.
 
@@ -31,6 +31,14 @@ Although this project serves as a personal training exercise, I have set several
 2.  **Expanded Clustering Methods**: Clustering is a crucial component of the Mapper algorithm. In addition to hierarchical clustering, I aim to include a variety of clustering techniques to increase flexibility and adaptability. (ex. K-means, DBSCAN, etc.)
 
 3.  **Code Structure**: The code is still under development and may be challenging to understand in its current form. My goal is to streamline the structure and provide a simple white paper that explains how to use the method effectively.
+
+4.  **Interval Clustering Optimization**: Most of the packages haven't produced the best clustering results in each interval. However, if this could be incorporated while computing the Mapper, it would be powerful. This will be part of future work, although it might increase computational complexity.
+
+5.  **Parallel**: Given the problem mentioned above, I plan to add parallel computation in the future. This will allow for flexible adjustment of the number of cores used for parallel computation, making the process more efficient.
+
+### Update Feature
+
+Version 1.1: 1. Update more readable structure 2. Added Kmeans, DBscan, and PAM clustering methods for user
 
 ## Why R?
 
