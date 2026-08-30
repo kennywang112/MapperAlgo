@@ -9,11 +9,7 @@
 #' @importFrom stats as.dist hclust cutree dist kmeans
 #' @export
 perform_clustering <- function(
-    original_data,
-    filter_values,
-    points_in_this_level,
-    methods,
-    method_params = list()
+    original_data, filter_values, points_in_this_level, methods, method_params = list()
 ) {
   num_points_in_this_level <- length(points_in_this_level)
 
@@ -36,13 +32,12 @@ perform_clustering <- function(
       level_heights <- level_hclust$height
       # find the best cutoff
       level_cutoff <- cluster_cutoff_at_first_empty_bin(level_heights, level_max_dist, method_params$num_bins_when_clustering)
-      level_external_indices <- points_in_this_level[level_hclust$order]
       level_internal_indices <- as.vector(cutree(list(
         merge = level_hclust$merge,
         height = level_hclust$height,
-        labels = level_external_indices), h = level_cutoff))
+        labels = points_in_this_level), h = level_cutoff))
       num_vertices_in_this_level <- max(level_internal_indices)
-      list(level_external_indices, level_internal_indices, num_vertices_in_this_level)
+      list(points_in_this_level, level_internal_indices, num_vertices_in_this_level)
     },
 
     kmeans = function() {
@@ -61,7 +56,7 @@ perform_clustering <- function(
         result <- tryCatch({
           level_kmean <- kmeans(level_data, centers = target_k)
           list(
-            points_in_this_level[order(level_kmean$cluster)],
+            points_in_this_level,
             as.vector(level_kmean$cluster),
             max(level_kmean$cluster))
           }, error = function(e) {
@@ -83,7 +78,7 @@ perform_clustering <- function(
       )
       if (max(dbscan_result$cluster) > 0) {
         list(
-          points_in_this_level[order(dbscan_result$cluster)],
+          points_in_this_level,
           as.vector(dbscan_result$cluster),
           max(dbscan_result$cluster)
         )
@@ -99,7 +94,7 @@ perform_clustering <- function(
         pam_result <- cluster::pam(level_data, k = num_clusters)
         if (max(pam_result$clustering) > 0) {
           list(
-            points_in_this_level[order(pam_result$clustering)],
+            points_in_this_level,
             as.vector(pam_result$clustering),
             max(pam_result$clustering)
           )

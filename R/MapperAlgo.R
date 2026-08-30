@@ -9,8 +9,9 @@
 #' @param intervals An integer specifying the number of intervals.
 #' @param interval_width The width of each interval.
 #' @param percent_overlap Percentage of overlap between consecutive intervals.
-#' @param methods Specify the clustering method to be used, e.g., "hclust" or "kmeans".
+#' @param methods Specify the clustering method to be used, e.g., "hclust" or "kmeans". Mutually exclusive with `method`.
 #' @param method_params A list of parameters for the clustering method.
+#' @param method An mlr3cluster Learner, e.g. mlr3cluster::lrn("clust.kmeans", centers = 3). Mutually exclusive with `methods`.
 #' @param cover_type Type of interval, either 'stride' or 'extension'.
 #' @param num_cores Number of cores to use for parallel computing.
 #' @return A list containing the Mapper graph components:
@@ -30,13 +31,27 @@ MapperAlgo <- function(
     original_data,
     filter_values, # dist_df[,1:col]
     percent_overlap, # 50
-    methods,
+    methods = NULL,
     method_params = list(), # params in each clustering method
+    method = NULL,
     cover_type = 'extension',
     intervals = NULL,
     interval_width = NULL,
     num_cores = 1
 ) {
+
+  using_new_method <- !is.null(method)
+  using_old_method <- !is.null(methods)
+
+  if (using_new_method && using_old_method) {
+    stop("Specify either `methods`/`method_params` or `method`, not both.")
+  }
+  if (!using_new_method && !using_old_method) {
+    stop("You must specify a clustering method via `methods` or `method`.")
+  }
+  if (using_new_method && !inherits(method, "Learner")) {
+    stop("`method` must be an mlr3cluster Learner, e.g. mlr3cluster::lrn(\"clust.kmeans\", centers = 3).")
+  }
 
   filter_values <- data.frame(filter_values)
   original_data <- as.data.frame(original_data)
@@ -93,22 +108,34 @@ MapperAlgo <- function(
   registerDoParallel(cl)
 
   results <- foreach(lsfi = 1:num_levelsets,
-                     .packages = c("cluster"),
-                     .export = c("cover_points", "to_lsmi", "perform_clustering",
-                                 "cluster_cutoff_at_first_empty_bin")) %dopar% {
+                     .packages = if (using_new_method) c("mlr3", "mlr3cluster") else c("cluster"),
+                     .export = if (using_new_method) {
+                       c("cover_points", "to_lsmi", "perform_clustering_mlr3")
+                     } else {
+                       c("cover_points", "to_lsmi", "perform_clustering", "cluster_cutoff_at_first_empty_bin")
+                     }) %dopar% {
 
                        points_in_level_set <- cover_points(
                          lsfi, filter_min, interval_width, percent_overlap,
                          filter_values, num_intervals, cover_type
                        )
 
-                       clustering_result <- perform_clustering(
-                         original_data,
-                         filter_values,
-                         points_in_level_set,
-                         methods,
-                         method_params
-                       )
+                       clustering_result <- if (using_new_method) {
+                         perform_clustering_mlr3(
+                           original_data,
+                           filter_values,
+                           points_in_level_set,
+                           method
+                         )
+                       } else {
+                         perform_clustering(
+                           original_data,
+                           filter_values,
+                           points_in_level_set,
+                           methods,
+                           method_params
+                         )
+                       }
 
                        list(
                          clustering_result = clustering_result,
@@ -158,6 +185,7 @@ MapperAlgo <- function(
                          percent_overlap = percent_overlap,
                          methods = methods,
                          method_params = method_params,
+                         method = method,
                          cover_type = cover_type,
                          intervals = intervals,
                          interval_width = interval_width

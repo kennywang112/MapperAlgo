@@ -35,21 +35,22 @@ time_taken <- system.time({
   )
 })
 time_taken
-MapperPlotter(GMapper, label=data$Species, original_data=data, avg=FALSE, use_embedding=FALSE)
+MapperPlotter(GMapper, label=data$Species, avg=FALSE, use_embedding=FALSE)
+MapperPlotter3D(GMapper, label=data$Species, avg=FALSE, use_embedding=FALSE)
 
 # This is an example for using is_node_attribute=TRUE
-g <- graph_from_adjacency_matrix(Mapper$adjacency, mode = "undirected")
+g <- graph_from_adjacency_matrix(GMapper$adjacency, mode = "undirected")
 e_result <- eigen_centrality(g)
-MapperPlotter(Mapper, label=e_result$vector, original_data=data, avg=FALSE, use_embedding=TRUE)
+MapperPlotter(GMapper, label=e_result$vector, avg=FALSE, use_embedding=TRUE)
 
 ## Save mapper
 library(jsonlite)
 
 export_data <- list(
-  adjacency = Mapper$adjacency,
-  num_vertices = Mapper$num_vertices,
-  level_of_vertex = Mapper$level_of_vertex,
-  points_in_vertex = Mapper$points_in_vertex,
+  adjacency = GMapper$adjacency,
+  num_vertices = GMapper$num_vertices,
+  level_of_vertex = GMapper$level_of_vertex,
+  points_in_vertex = GMapper$points_in_vertex,
   original_data = data
 )
 

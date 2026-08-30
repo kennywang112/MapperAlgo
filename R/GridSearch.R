@@ -62,7 +62,6 @@ GridSearch <- function(
 
       wdg <- MapperPlotter(Mapper=Mapper,
                            label=if (!is.null(use_embedding)) embedded else label,
-                           original_data=original_data,
                            avg=avg,
                            use_embedding=if (!is.null(use_embedding)) TRUE else FALSE
       )

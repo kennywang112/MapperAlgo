@@ -8,8 +8,9 @@ MapperAlgo(
   original_data,
   filter_values,
   percent_overlap,
-  methods,
+  methods = NULL,
   method_params = list(),
+  method = NULL,
   cover_type = "extension",
   intervals = NULL,
   interval_width = NULL,
@@ -23,9 +24,11 @@ MapperAlgo(
 
 \item{percent_overlap}{Percentage of overlap between consecutive intervals.}
 
-\item{methods}{Specify the clustering method to be used, e.g., "hclust" or "kmeans".}
+\item{methods}{Specify the clustering method to be used, e.g., "hclust" or "kmeans". Mutually exclusive with \code{method}.}
 
 \item{method_params}{A list of parameters for the clustering method.}
+
+\item{method}{An mlr3cluster Learner, e.g. mlr3cluster::lrn("clust.kmeans", centers = 3). Mutually exclusive with \code{methods}.}
 
 \item{cover_type}{Type of interval, either 'stride' or 'extension'.}
 

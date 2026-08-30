@@ -1,7 +1,6 @@
 #' Visualizes the correlation between two Mapper colorings.
 #'
 #' @param mapper A Mapper object created by the `MapperAlgo` function.
-#' @param original_data Original dataframe, not the filter values.
 #' @param labels List of two Mapper color.
 #' @param use_embedding List of two booleans indicating whether to use original data or embedding data.
 #' @return Plot of the correlation between two Mapper.
@@ -9,7 +8,7 @@
 #' @importFrom ggplot2 ggplot geom_point geom_smooth theme_minimal labs aes
 #' @export
 MapperCorrelation <- function(
-    mapper, original_data, labels = list(), use_embedding = list(FALSE, FALSE)
+    mapper, labels = list(), use_embedding = list(FALSE, FALSE)
 ) {
 
   get_node_values <- function(m, lbl, embed) {

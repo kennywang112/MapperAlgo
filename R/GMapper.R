@@ -11,8 +11,6 @@
 #' @param method_params A list of parameters for the clustering method.
 #' @param num_cores Number of cores to use for parallel computing.
 #' @return A MapperAlgo object same as MapperAlgo output
-#' @importFrom mclust Mclust
-#' @importFrom nortest ad.test
 #' @importFrom foreach foreach %dopar%
 #' @importFrom parallel makeCluster stopCluster
 #' @importFrom stats var

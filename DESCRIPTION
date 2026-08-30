@@ -1,7 +1,7 @@
 Package: MapperAlgo
 Title: Topological Data Analysis: Mapper Algorithm
-Version: 1.1.0
-Date: 2026-04-13
+Version: 1.2.0
+Date: 2026-08-30
 Authors@R: c(
   person("ChiChien", "Wang", email = "kennywang2003@gmail.com", role = c("aut", "cre", "trl")),
   person("Paul", "Pearson", email = "pearsonp@hope.edu", role = "ctb"),
@@ -17,12 +17,13 @@ Imports:
     doParallel,
     foreach,
     networkD3,
+    plotly,
     igraph,
     ggplot2,
     htmlwidgets,
-    rlang,
     webshot2,
     jsonlite,
+    rlang,
     viridisLite,
     mclust,
     nortest
@@ -30,6 +31,8 @@ Suggests:
     fastcluster,
     cluster,
     dbscan,
+    mlr3,
+    mlr3cluster,
     testthat (>= 3.0.0)
 License: MIT + file LICENSE
 URL: https://github.com/TDA-R/MapperAlgo
