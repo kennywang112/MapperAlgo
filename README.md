@@ -51,9 +51,9 @@ GMapper <- GMapperAlgo(
   num_cores = 12
 )
 
-MapperPlotter(Mapper, label=data$Species, original_data=data, avg=FALSE, use_embedding=FALSE)
-MapperPlotter(FMapper, label=data$Species, original_data=data, avg=FALSE, use_embedding=FALSE)
-MapperPlotter(GMapper, label=data$Species, original_data=data, avg=FALSE, use_embedding=FALSE)
+MapperPlotter(Mapper, label=data$Species, avg=FALSE, use_embedding=FALSE)
+MapperPlotter(FMapper, label=data$Species, avg=FALSE, use_embedding=FALSE)
+MapperPlotter(GMapper, label=data$Species, avg=FALSE, use_embedding=FALSE)
 
 ```
 
